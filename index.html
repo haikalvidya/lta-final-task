@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script type="text/javascript" src="./lexicalAnalyzer.js"></script>
+    <title>Tugas Besar TBA</title>
+    <style>
+
+        .card {
+            margin-top: 50px;
+            color: #bbb;
+            background: #112B3C;
+            margin-left: 10pt;
+            margin-right: 10pt;
+            border-radius: 7pt;
+            box-shadow: 0 0 20pt 4pt #000;
+        }
+
+        .card-custom {
+            margin: auto;
+            padding: 20px;
+            margin-top: 50px;
+            color: #bbb;
+            background: #112B3C;
+            margin-left: 100pt;
+            margin-right: 100pt;
+            margin-bottom: 50pt;
+            border-radius: 7pt;
+            box-shadow: 0 0 20pt 4pt #000;
+        }
+        .card-parser h5{
+            font-weight: bold;
+        }
+
+        .card-lexical h5{
+            font-weight: bold;
+        }
+        
+        .card-lexical .formButton {
+            width: calc(100%);
+            padding: 8pt;
+            margin: 20pt 0 20pt 0;
+            color: #ccc;
+            background: rgba(255, 255, 255, 0.0725);
+            border: 2pt solid #fff;
+            border-radius: 100pt;
+            font-size: 15pt;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all .1s ease-in-out;
+        }
+
+    </style>
+</head>
+<body style="background-color:powderblue;">
+
+    <div class="container">
+        <div class="row">
+                <div class="card card-lexical col-lg ">
+        <div class="card-body">
+          <h5 class="card-title text-center">Lexical Analyzer</h5>
+          <p class="card-text text-center">au | ho | ibana | manuhor | maniop | mangalului | manggadis | pinahan | sira | miyak | lem | tas</p>
+          <form>
+            <div class="input-group mb-3">
+                <input id="inputlexical" type="text" class="form-control" >
+            </div>              
+            <button type="button" class="btn btn-primary btn-default formButton" onclick="lexicalAnalyzer()">Submit</button>
+          </form>
+          <div class="alert alert-success" role="alert" style="margin-top: 10px;">
+            <p id="result-lexical">
+              Result
+            </p>
+          </div>
+          
+        </div>
+    </div>
+
+    <div class="card card-lexical col-lg ">
+        <div class="card-body">
+          <h5 class="card-title text-center">Parser</h5>
+          <p class="card-text text-center">au | ho | ibana | manuhor | maniop | mangalului | manggadis | pinahan | sira | miyak | lem | tas</p>
+          <form>
+            <div class="input-group mb-3">
+                <input id="inputlexical" type="text" class="form-control" >
+            </div>
+                          
+            <button type="button" class="btn btn-primary btn-default formButton" onclick="lexicalAnalyzer()">Submit</button>
+          </form>
+          <div class="alert alert-success" role="alert" style="margin-top: 10px;">
+            <p id="result-lexical">
+              Result
+            </p>
+          </div>
+        </div>
+    </div>
+        </div>
+    </div>
+    
+
+    <div class="card-custom card-lexical style="width: 60rem;">
+        <div class="card-body">
+          <h5 class="card-title text-center"> Lexical Analyzer dan Parser</h5>
+          <p class="card-text text-center">au | ho | ibana | manuhor | maniop | mangalului | manggadis | pinahan | sira | miyak | lem | tas</p>
+          <form>
+            <div class="input-group mb-3">
+                <input id="inputlexical" type="text" class="form-control" >
+            </div>
+                          
+            <button type="button" class="btn btn-primary btn-default formButton" onclick="lexicalAnalyzer()">Submit</button>
+          </form>
+          <div class="alert alert-success" role="alert" style="margin-top: 10px;">
+            <p id="result-lexical">
+              Result
+            </p>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
