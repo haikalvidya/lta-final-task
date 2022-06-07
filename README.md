@@ -18,4 +18,4 @@ Finite automata design from grammar for program
 
 ![webpage](./webpage.png)
 
-you can access [here](https://htmlpreview.github.io/?https://github.com/haikalvidya/lta-final-task/blob/main/index.html)
+you can access [here](https://raw.githack.com/haikalvidya/lta-final-task/main/index.html)
