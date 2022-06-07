@@ -1,11 +1,20 @@
 # Final Task Language Theory and Automata
 
-Finite automata for the program
+Grammar for the Batak language
+
+```
+<S> ::= <subject> <verb> <noun>
+<subject> ::= au | ho | ibana
+<verb> ::= manuhor | maniop | mangalului | manggadis 
+<noun> ::= pinahan | sira | miyak | lem | tas
+```
+
+Finite automata design from grammar for program
 
 ![finite automata](./finite-automata.png)
 
 
-## Design for the program
+## Design webpage
 
 ![webpage](./webpage.png)
 
