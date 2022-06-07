@@ -12,8 +12,26 @@ function lexicalAnalyzer() {
   
   // list all characters on words that we use
   const words = "au ho ibana manuhor maniop mangalului manggadis pinahan sira miyak lem tas";
+  let listWords = words.split(' ');
   let listChars = words.split('');
-  let setChars = [...new Set(listChars)]
+  let setChars = [...new Set(listChars)];
+  
+  // get box element to change color if error or success
+  theBox = document.getElementById("result-lexical-box");
+
+  // check kata_inpt is valid by checkin in listWords
+  let kata_inpt_list = kata_inpt.split(' ');
+  let isInList = true;
+  kata_inpt_list.forEach(word => {
+    if(!listWords.includes(word)) {
+      isInList = false;
+      Swal.fire({
+        text: "One of the words entered is not in the list",
+        confirmButtonColor: '#52b69a',
+        confirmButtonText: 'OK!'
+      });
+    }
+  });
 
   // set result to empty string
   document.getElementById("result-lexical").innerHTML = ''
@@ -152,8 +170,10 @@ function lexicalAnalyzer() {
   // check last state
   if (state == 'acc') {
     document.getElementById("result-lexical").innerHTML += 'kalimat yang dimasukkan valid: ' + kata_inpt;
-  } else if(state == 'err') {
-    document.getElementById("result-lexical").innerHTML += 'error' + cur_char + ' ' + cur_str + ' ' + state + '<br>';
+    theBox.className = "alert alert-success"
+  } else if(state == 'err' || !isInList) {
+    document.getElementById("result-lexical").innerHTML += 'error<br>';
+    theBox.className = "alert alert-danger"
   }
 }
 
