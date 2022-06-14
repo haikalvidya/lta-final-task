@@ -1,5 +1,7 @@
-function lexicalAnalyzer() {
-  var kata_inpt = document.getElementById("inputlexical").value;
+function lexicalAnalyzer(kata_inpt='') {
+  if (kata_inpt.length == 0) {
+    var kata_inpt = document.getElementById("inputlexical").value;
+  }
   const kalimat = kata_inpt.toLowerCase() + ' #';
   
 	// create finite automata representation
@@ -34,7 +36,7 @@ function lexicalAnalyzer() {
   });
 
   // set result to empty string
-  document.getElementById("result-lexical").innerHTML = ''
+  document.getElementById("result-lexical").innerHTML = '';
 
   // generate fa_relation_repres values
   states.forEach(theState => {
@@ -170,16 +172,188 @@ function lexicalAnalyzer() {
   // check last state
   if (state == 'acc') {
     document.getElementById("result-lexical").innerHTML += 'kalimat yang dimasukkan valid: ' + kata_inpt;
-    theBox.className = "alert alert-success"
+    theBox.className = "alert alert-success";
+    return true;
   } else if(state == 'err' || !isInList) {
     document.getElementById("result-lexical").innerHTML += 'error<br>';
-    theBox.className = "alert alert-danger"
+    theBox.className = "alert alert-danger";
+    return false;
   }
 }
 
-function parser() {
-  const kata_inpt = document.getElementById("inputparser");
-  // still in progres
-  document.getElementById("result-parser").innerHTML = kata_inpt;
+function parser(kata_inpt='') {
+  if (kata_inpt.length == 0) {
+    const kata_inpt = document.getElementById("inputparser").value;
+  }
+  let listInpt = kata_inpt.toLowerCase().split(' ');
+  listInpt.push('EOS');
+  
+  // get box element to change color if error or success
+  theBox = document.getElementById("result-parser-box");
+
+  // set result to empty string
+  document.getElementById("result-parser").innerHTML = '';
+
+  // list all characters on words that we use
+  const words = "au ho ibana manuhor maniop mangalului manggadis pinahan sira miyak lem tas";
+  let listTerm = words.split(' ');
+  let listNonTerm = ['S', 'SB', 'VB', 'OB'];
+
+  // document.getElementById("result-parser").innerHTML = listInpt; 
+
+  // parse table representation
+  let parse_table = {};
+
+  // non-term S
+  parse_table[['S', '']] = ['ERR'];
+  parse_table[['S', 'au']] = ['SB', 'VB', 'OB'];
+  parse_table[['S', 'ho']] = ['SB', 'VB', 'OB'];
+  parse_table[['S', 'ibana']] = ['SB', 'VB', 'OB'];
+  parse_table[['S', 'manuhor']] = ['ERR'];
+  parse_table[['S', 'maniop']] = ['ERR'];
+  parse_table[['S', 'mangalului']] = ['ERR'];
+  parse_table[['S', 'manggadis']] = ['ERR'];
+  parse_table[['S', 'pinahan']] = ['ERR'];
+  parse_table[['S', 'sira']] = ['ERR'];
+  parse_table[['S', 'miyak']] = ['ERR'];
+  parse_table[['S', 'lem']] = ['ERR'];
+  parse_table[['S', 'tas']] = ['ERR'];
+  parse_table[['S', 'EOS']] = ['ERR'];
+
+  // non-term SB
+  parse_table[['SB', 'au']] = ['au'];
+  parse_table[['SB', 'ho']] = ['ho'];
+  parse_table[['SB', 'ibana']] = ['ibana'];
+  parse_table[['SB', 'manuhor']] = ['ERR'];
+  parse_table[['SB', 'maniop']] = ['ERR'];
+  parse_table[['SB', 'mangalului']] = ['ERR'];
+  parse_table[['SB', 'manggadis']] = ['ERR'];
+  parse_table[['SB', 'pinahan']] = ['ERR'];
+  parse_table[['SB', 'sira']] = ['ERR'];
+  parse_table[['SB', 'miyak']] = ['ERR'];
+  parse_table[['SB', 'lem']] = ['ERR'];
+  parse_table[['SB', 'tas']] = ['ERR'];
+  parse_table[['SB', 'EOS']] = ['ERR'];
+
+  // non-term VB
+  parse_table[['VB', 'ho']] = ['ERR'];
+  parse_table[['VB', 'ibana']] = ['ERR'];
+  parse_table[['VB', 'au']] = ['ERR'];
+  parse_table[['VB', 'manuhor']] = ['manuhor'];
+  parse_table[['VB', 'maniop']] = ['maniop'];
+  parse_table[['VB', 'mangalului']] = ['mangalului'];
+  parse_table[['VB', 'manggadis']] = ['manggadis'];
+  parse_table[['VB', 'pinahan']] = ['ERR'];
+  parse_table[['VB', 'sira']] = ['ERR'];
+  parse_table[['VB', 'miyak']] = ['ERR'];
+  parse_table[['VB', 'lem']] = ['ERR'];
+  parse_table[['VB', 'tas']] = ['ERR'];
+  parse_table[['VB', 'EOS']] = ['ERR'];
+
+  // non-term OB
+  parse_table[['OB', 'ho']] = ['ERR'];
+  parse_table[['OB', 'ibana']] = ['ERR'];
+  parse_table[['OB', 'au']] = ['ERR'];
+  parse_table[['OB', 'manuhor']] = ['ERR'];
+  parse_table[['OB', 'maniop']] = ['ERR'];
+  parse_table[['OB', 'mangalului']] = ['ERR'];
+  parse_table[['OB', 'manggadis']] = ['ERR'];
+  parse_table[['OB', 'pinahan']] = ['ERR'];
+  parse_table[['OB', 'sira']] = ['sira'];
+  parse_table[['OB', 'miyak']] = ['miyak'];
+  parse_table[['OB', 'lem']] = ['lem'];
+  parse_table[['OB', 'tas']] = ['tas'];
+  parse_table[['OB', 'EOS']] = ['ERR'];
+
+  // doing parsing with stacking
+  stack = [];
+  stack.push('#');
+  stack.push('S');
+
+  document.getElementById("result-parser").innerHTML += 'Doing Parsing<br>'
+
+  for(iter_listInpt = 0;stack.length > 0;) {
+    theWords = listInpt[iter_listInpt];
+    let top = stack[stack.length - 1];
+
+    document.getElementById("result-parser").innerHTML += 'The stack before operation : ' + stack +'<br>';
+    document.getElementById("result-parser").innerHTML += 'Top stack : ' + top + '<br>';
+    document.getElementById("result-parser").innerHTML += 'The character : ' + theWords + '<br>';
+
+    if (listNonTerm.includes(top)) {
+      document.getElementById("result-parser").innerHTML += 'Top stack is in non-term<br>';
+      if (parse_table[[top, theWords]][0] != 'ERR') {
+        stack.pop();
+        let words_pushed = parse_table[[top, theWords]];
+        words_pushed
+        .slice()
+        .reverse()
+        .forEach(word => {
+          stack.push(word);
+        });
+      } else {
+        document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+        break;
+      }
+    } else if (listTerm.includes(top)) {
+      document.getElementById("result-parser").innerHTML += 'Top stack is in term<br>';
+      if (top == theWords) {
+        stack.pop();
+        iter_listInpt++;
+        theWords = listInpt[iter_listInpt];
+        if (theWords == "EOS") {
+          stack.pop();
+          if (iter_listInpt <= 3) {
+            document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+            break;
+          }
+        }
+      } else {
+        document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+        break;
+      }
+    } else {
+      document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+      break;
+    }
+
+    document.getElementById("result-parser").innerHTML += 'The stack after operation : ' + stack +'<br><br>';
+  }
+
+  if (theWords == 'EOS' && stack.length == 0) {
+    document.getElementById("result-parser").innerHTML += 'The input "' + kata_inpt + '" is valid' + '<br>';
+    theBox.className = "alert alert-success";
+    return true;
+  } else {
+    document.getElementById("result-parser").innerHTML += 'The input "' + kata_inpt + '" is invalid' + '<br>';
+    theBox.className = "alert alert-danger";
+    return false;
+  }
 }
 
+function duoFunction() {
+  var kata_inpt = document.getElementById("inputduo").value;
+  document.getElementById("result-duo").innerHTML = ''
+  if (kata_inpt.length != 0){
+    if (lexicalAnalyzer(kata_inpt)) {
+      if(!parser(kata_inpt)) {
+        document.getElementById("result-duo").innerHTML += 'Error occurred on parser<br>';
+        document.getElementById("result-duo-box").className = "alert alert-danger";
+      } else {
+        document.getElementById("result-duo").innerHTML += 'Valid sentence<br>';
+        document.getElementById("result-duo-box").className = "alert alert-success";
+      }
+    } else {
+      document.getElementById("result-duo").innerHTML += 'Error occurred on lexical analyzer<br>';
+      document.getElementById("result-duo-box").className = "alert alert-danger";
+    }
+  } else {
+    document.getElementById("result-duo").innerHTML += 'don\'t try to test until you find a bug, all errors case have been coverage<br>';
+    document.getElementById("result-duo-box").className = "alert alert-danger";
+    Swal.fire({
+      text: "Textbox cannot be empty",
+      confirmButtonColor: '#52b69a',
+      confirmButtonText: 'OK!'
+    });
+  }
+}
