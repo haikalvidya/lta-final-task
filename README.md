@@ -13,6 +13,9 @@ Finite automata design from grammar for program
 
 ![finite automata](./finite-automata.png)
 
+Table parser for the program
+
+![parse table](./table-parser.png)
 
 ## Design webpage
 
