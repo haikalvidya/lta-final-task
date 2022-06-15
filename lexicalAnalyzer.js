@@ -1,6 +1,10 @@
-function lexicalAnalyzer(kata_inpt='') {
+function lexicalAnalyzer(kata_inpt='', elemtIdResult='', elemntIdBox='') {
   if (kata_inpt.length == 0) {
     var kata_inpt = document.getElementById("inputlexical").value;
+  }
+  if (elemtIdResult.length==0 && elemntIdBox.length==0){
+    elemtIdResult = "result-lexical";
+    elemntIdBox = "result-lexical-box";
   }
   const kalimat = kata_inpt.toLowerCase() + ' #';
   
@@ -19,7 +23,7 @@ function lexicalAnalyzer(kata_inpt='') {
   let setChars = [...new Set(listChars)];
   
   // get box element to change color if error or success
-  theBox = document.getElementById("result-lexical-box");
+  theBox = document.getElementById(elemntIdBox);
 
   // check kata_inpt is valid by checkin in listWords
   let kata_inpt_list = kata_inpt.split(' ');
@@ -36,7 +40,7 @@ function lexicalAnalyzer(kata_inpt='') {
   });
 
   // set result to empty string
-  document.getElementById("result-lexical").innerHTML = '';
+  document.getElementById(elemtIdResult).innerHTML = '';
 
   // generate fa_relation_repres values
   states.forEach(theState => {
@@ -164,42 +168,48 @@ function lexicalAnalyzer(kata_inpt='') {
     cur_str += cur_char;
     state = fa_relation_repres[[state, cur_char]];
     if (state == 'q42'){
-      document.getElementById("result-lexical").innerHTML += 'current word: ' + cur_str + 'is valid<br>';
+      document.getElementById(elemtIdResult).innerHTML += 'current word: ' + cur_str + 'is valid<br>';
       cur_str = '';
     }
   }
 
   // check last state
   if (state == 'acc') {
-    document.getElementById("result-lexical").innerHTML += 'kalimat yang dimasukkan valid: ' + kata_inpt;
+    document.getElementById(elemtIdResult).innerHTML += 'kalimat yang dimasukkan valid: ' + kata_inpt;
     theBox.className = "alert alert-success";
     return true;
   } else if(state == 'err' || !isInList) {
-    document.getElementById("result-lexical").innerHTML += 'error<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'error<br>';
     theBox.className = "alert alert-danger";
     return false;
   }
 }
 
-function parser(kata_inpt='') {
-  if (kata_inpt.length == 0) {
-    const kata_inpt = document.getElementById("inputparser").value;
+function parser(kata_inpt='', elemtIdResult='', elemntIdBox='', fromLexical=false) {
+  if (kata_inpt == '') {
+    kata_inpt = document.getElementById("inputparser").value;
+  }
+  if (elemtIdResult == '' || elemntIdBox == ''){
+    elemtIdResult = "result-parser";
+    elemntIdBox = "result-parser-box";
   }
   let listInpt = kata_inpt.toLowerCase().split(' ');
   listInpt.push('EOS');
   
   // get box element to change color if error or success
-  theBox = document.getElementById("result-parser-box");
+  theBox = document.getElementById(elemntIdBox);
 
   // set result to empty string
-  document.getElementById("result-parser").innerHTML = '';
+  if (document.getElementById(elemtIdResult).textContent.includes('Result') || !fromLexical) {
+    document.getElementById(elemtIdResult).innerHTML = '';
+  } else {
+    document.getElementById(elemtIdResult).innerHTML += '<br><br>================================================<br><br>';
+  }
 
   // list all characters on words that we use
   const words = "au ho ibana manuhor maniop mangalului manggadis pinahan sira miyak lem tas";
   let listTerm = words.split(' ');
   let listNonTerm = ['S', 'SB', 'VB', 'OB'];
-
-  // document.getElementById("result-parser").innerHTML = listInpt; 
 
   // parse table representation
   let parse_table = {};
@@ -258,7 +268,7 @@ function parser(kata_inpt='') {
   parse_table[['OB', 'maniop']] = ['ERR'];
   parse_table[['OB', 'mangalului']] = ['ERR'];
   parse_table[['OB', 'manggadis']] = ['ERR'];
-  parse_table[['OB', 'pinahan']] = ['ERR'];
+  parse_table[['OB', 'pinahan']] = ['pinahan'];
   parse_table[['OB', 'sira']] = ['sira'];
   parse_table[['OB', 'miyak']] = ['miyak'];
   parse_table[['OB', 'lem']] = ['lem'];
@@ -270,18 +280,18 @@ function parser(kata_inpt='') {
   stack.push('#');
   stack.push('S');
 
-  document.getElementById("result-parser").innerHTML += 'Doing Parsing<br>'
+  document.getElementById(elemtIdResult).innerHTML += 'Doing Parsing<br>'
 
   for(iter_listInpt = 0;stack.length > 0;) {
     theWords = listInpt[iter_listInpt];
     let top = stack[stack.length - 1];
 
-    document.getElementById("result-parser").innerHTML += 'The stack before operation : ' + stack +'<br>';
-    document.getElementById("result-parser").innerHTML += 'Top stack : ' + top + '<br>';
-    document.getElementById("result-parser").innerHTML += 'The character : ' + theWords + '<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'The stack before operation : ' + stack +'<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'Top stack : ' + top + '<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'The character : ' + theWords + '<br>';
 
     if (listNonTerm.includes(top)) {
-      document.getElementById("result-parser").innerHTML += 'Top stack is in non-term<br>';
+      document.getElementById(elemtIdResult).innerHTML += 'Top stack is in non-term<br>';
       if (parse_table[[top, theWords]][0] != 'ERR') {
         stack.pop();
         let words_pushed = parse_table[[top, theWords]];
@@ -292,11 +302,11 @@ function parser(kata_inpt='') {
           stack.push(word);
         });
       } else {
-        document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+        document.getElementById(elemtIdResult).innerHTML += '<br>Error occurred<br>';
         break;
       }
     } else if (listTerm.includes(top)) {
-      document.getElementById("result-parser").innerHTML += 'Top stack is in term<br>';
+      document.getElementById(elemtIdResult).innerHTML += 'Top stack is in term<br>';
       if (top == theWords) {
         stack.pop();
         iter_listInpt++;
@@ -304,28 +314,28 @@ function parser(kata_inpt='') {
         if (theWords == "EOS") {
           stack.pop();
           if (iter_listInpt <= 3) {
-            document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+            document.getElementById(elemtIdResult).innerHTML += '<br>Error occurred<br>';
             break;
           }
         }
       } else {
-        document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+        document.getElementById(elemtIdResult).innerHTML += '<br>Error occurred<br>';
         break;
       }
     } else {
-      document.getElementById("result-parser").innerHTML += '<br>Error occurred<br>';
+      document.getElementById(elemtIdResult).innerHTML += '<br>Error occurred<br>';
       break;
     }
 
-    document.getElementById("result-parser").innerHTML += 'The stack after operation : ' + stack +'<br><br>';
+    document.getElementById(elemtIdResult).innerHTML += 'The stack after operation : ' + stack +'<br><br>';
   }
 
   if (theWords == 'EOS' && stack.length == 0) {
-    document.getElementById("result-parser").innerHTML += 'The input "' + kata_inpt + '" is valid' + '<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'The input "' + kata_inpt + '" is valid' + '<br>';
     theBox.className = "alert alert-success";
     return true;
   } else {
-    document.getElementById("result-parser").innerHTML += 'The input "' + kata_inpt + '" is invalid' + '<br>';
+    document.getElementById(elemtIdResult).innerHTML += 'The input "' + kata_inpt + '" is invalid' + '<br>';
     theBox.className = "alert alert-danger";
     return false;
   }
@@ -335,8 +345,8 @@ function duoFunction() {
   var kata_inpt = document.getElementById("inputduo").value;
   document.getElementById("result-duo").innerHTML = ''
   if (kata_inpt.length != 0){
-    if (lexicalAnalyzer(kata_inpt)) {
-      if(!parser(kata_inpt)) {
+    if (lexicalAnalyzer(kata_inpt, "result-duo", "result-duo-box")) {
+      if(!parser(kata_inpt, "result-duo", "result-duo-box", true)) {
         document.getElementById("result-duo").innerHTML += 'Error occurred on parser<br>';
         document.getElementById("result-duo-box").className = "alert alert-danger";
       } else {
