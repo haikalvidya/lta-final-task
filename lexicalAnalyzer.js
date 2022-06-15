@@ -1,4 +1,13 @@
 function lexicalAnalyzer(kata_inpt='', elemtIdResult='', elemntIdBox='') {
+  // clean text box that unrelated
+  document.getElementById("result-duo").innerHTML = 'Result';
+  document.getElementById("result-duo-box").className = "alert alert-dark";
+  document.getElementById("result-parser").innerHTML = 'Result';
+  document.getElementById("result-parser-box").className = "alert alert-dark";
+  document.getElementById("inputduo").value = '';
+  document.getElementById("inputparser").value = '';
+
+  // the program
   if (kata_inpt.length == 0) {
     var kata_inpt = document.getElementById("inputlexical").value;
   }
@@ -186,6 +195,17 @@ function lexicalAnalyzer(kata_inpt='', elemtIdResult='', elemntIdBox='') {
 }
 
 function parser(kata_inpt='', elemtIdResult='', elemntIdBox='', fromLexical=false) {
+  // clean text box that unrelated
+  document.getElementById("result-lexical").innerHTML = 'Result';
+  document.getElementById("result-lexical-box").className = "alert alert-dark";
+  if (!fromLexical) {
+    document.getElementById("result-duo").innerHTML = 'Result';
+    document.getElementById("result-duo-box").className = "alert alert-dark";
+    document.getElementById("inputduo").value = '';
+  }
+  document.getElementById("inputlexical").value = '';
+
+  // the program
   if (kata_inpt == '') {
     kata_inpt = document.getElementById("inputparser").value;
   }
@@ -342,6 +362,15 @@ function parser(kata_inpt='', elemtIdResult='', elemntIdBox='', fromLexical=fals
 }
 
 function duoFunction() {
+  // clean text box that unrelated
+  document.getElementById("result-lexical").innerHTML = 'Result';
+  document.getElementById("result-lexical-box").className = "alert alert-dark";
+  document.getElementById("result-parser").innerHTML = 'Result';
+  document.getElementById("result-parser-box").className = "alert alert-dark";
+  document.getElementById("inputlexical").value = '';
+  document.getElementById("inputparser").value = '';
+
+  // program
   var kata_inpt = document.getElementById("inputduo").value;
   document.getElementById("result-duo").innerHTML = ''
   if (kata_inpt.length != 0){
