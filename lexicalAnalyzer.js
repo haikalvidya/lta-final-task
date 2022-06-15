@@ -4,8 +4,6 @@ function lexicalAnalyzer(kata_inpt='', elemtIdResult='', elemntIdBox='') {
   document.getElementById("result-duo-box").className = "alert alert-dark";
   document.getElementById("result-parser").innerHTML = 'Result';
   document.getElementById("result-parser-box").className = "alert alert-dark";
-  document.getElementById("inputduo").value = '';
-  document.getElementById("inputparser").value = '';
 
   // the program
   if (kata_inpt.length == 0) {
@@ -201,9 +199,7 @@ function parser(kata_inpt='', elemtIdResult='', elemntIdBox='', fromLexical=fals
   if (!fromLexical) {
     document.getElementById("result-duo").innerHTML = 'Result';
     document.getElementById("result-duo-box").className = "alert alert-dark";
-    document.getElementById("inputduo").value = '';
   }
-  document.getElementById("inputlexical").value = '';
 
   // the program
   if (kata_inpt == '') {
@@ -367,8 +363,6 @@ function duoFunction() {
   document.getElementById("result-lexical-box").className = "alert alert-dark";
   document.getElementById("result-parser").innerHTML = 'Result';
   document.getElementById("result-parser-box").className = "alert alert-dark";
-  document.getElementById("inputlexical").value = '';
-  document.getElementById("inputparser").value = '';
 
   // program
   var kata_inpt = document.getElementById("inputduo").value;
